@@ -4,10 +4,10 @@
 
 			//Twitter Keys
 var secret = {
-consumer_key: "",
-consumer_secret: "",
-access_token_key: "",
-access_token_secret: ""
+consumer_key: "QZWRES9U3ndasxxCSFevcrdXV",
+consumer_secret: "pIARHK2frU5Inlv4CypfGohHlXGYaNayOkWJN872rUqMY7jtCa",
+access_token_key: "784871176199868416-KUY0SF28s9ezmrCor88WolgrRlORpMD",
+access_token_secret: "ewd31h65G1nQzYGFzJZIMJ1hJQq79xqChWsuVt1e6ga1u"
 			}
 
 			//Define new twitter variable
@@ -30,7 +30,7 @@ access_token_secret: ""
 			};
 
 			download('http://thecatapi.com/api/images/get?format=src&type=gif', 'image.gif', function(){
-				console.log('done');
+				console.log('Image downloaded from server');
 			});
 
 			var url = "http://catfacts-api.appspot.com/api/facts?number=1";
@@ -43,7 +43,7 @@ access_token_secret: ""
 				if (!error && response.statusCode === 200) {
 					fs.writeFile('message.txt', body.facts, (err) => {
 						if (err) throw err;
-						console.log('It\'s saved!');
+						console.log('Fact downloaded from server and saved successfully');
 					});
 				}
 			})
@@ -63,7 +63,7 @@ access_token_secret: ""
 			    	status: statusString,
 			    	in_reply_to_status_id: tweet.id_str,
 			      media_ids: media.media_id_string // Pass the media id string
-			  }
+			  } 
 
 			  Twitter.post('statuses/update', status, function(error, tweet, response) {
 			  	if (!error) {
@@ -71,6 +71,8 @@ access_token_secret: ""
 			  	}
 			  });
 
+			} else{
+				console.log(error);
 			}
 		});
 
