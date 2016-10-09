@@ -4,10 +4,10 @@
 
 			//Twitter Keys
 var secret = {
-consumer_key: "QZWRES9U3ndasxxCSFevcrdXV",
-consumer_secret: "pIARHK2frU5Inlv4CypfGohHlXGYaNayOkWJN872rUqMY7jtCa",
-access_token_key: "784871176199868416-KUY0SF28s9ezmrCor88WolgrRlORpMD",
-access_token_secret: "ewd31h65G1nQzYGFzJZIMJ1hJQq79xqChWsuVt1e6ga1u"
+consumer_key: "",
+consumer_secret: "",
+access_token_key: "",
+access_token_secret: ""
 			}
 
 			//TODO: ADD SET INVERVAL INTO FILTER STREAM
