@@ -10,6 +10,8 @@ access_token_key: "784871176199868416-KUY0SF28s9ezmrCor88WolgrRlORpMD",
 access_token_secret: "ewd31h65G1nQzYGFzJZIMJ1hJQq79xqChWsuVt1e6ga1u"
 			}
 
+			//TODO: ADD SET INVERVAL INTO FILTER STREAM
+
 			//Define new twitter variable
 			var Twitter = new TwitterPackage(secret);
 
@@ -43,7 +45,7 @@ access_token_secret: "ewd31h65G1nQzYGFzJZIMJ1hJQq79xqChWsuVt1e6ga1u"
 				if (!error && response.statusCode === 200) {
 					fs.writeFile('message.txt', body.facts, (err) => {
 						if (err) throw err;
-						console.log('Fact downloaded from server and saved successfully');
+						console.log('Fact downloaded from the Server!');
 					});
 				}
 			})
@@ -53,7 +55,7 @@ access_token_secret: "ewd31h65G1nQzYGFzJZIMJ1hJQq79xqChWsuVt1e6ga1u"
 					// Make post request on media endpoint. Pass file data as media parameter
 			Twitter.post('media/upload', {media: data}, function(error, media, response) {
 
-				if (!error) {
+				if (!error) {\
 
 			    // If successful, a media object will be returned.
 			    console.log(media);
