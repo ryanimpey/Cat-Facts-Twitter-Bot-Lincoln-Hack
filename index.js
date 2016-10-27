@@ -1,87 +1,89 @@
-			var TwitterPackage = require('twitter');
-			var fs = require('fs');
-			var request = require('request');
+var TwitterPackage = require('twitter');
+var fs = require('fs');
+var request = require('request');
 
-			//Twitter Keys
+//Twitter Keys
 var secret = {
-consumer_key: "",
-consumer_secret: "",
-access_token_key: "",
-access_token_secret: ""
-			}
+	consumer_key: "",
+	consumer_secret: "",
+	access_token_key: "",
+	access_token_secret: ""
+};
 
-			//TODO: ADD SET INVERVAL INTO FILTER STREAM
+//TODO: ADD SET INTERVAL INTO FILTER STREAM
 
-			//Define new twitter variable
-			var Twitter = new TwitterPackage(secret);
+//Define new twitter variable
+var Twitter = new TwitterPackage(secret);
 
-			console.log("started Console");
+console.log("started Console");
 
-			Twitter.stream('statuses/filter', {track: '#catFact'},  function(stream) {
+Twitter.stream('statuses/filter', {track: '#catFact'}, function (stream) {
 
-				stream.on('data', function(tweet) {
+	stream.on('data', function (tweet) {
 
-					var data = require('fs').readFileSync('image.gif');
-					var download = function(uri, filename, callback){
-				request.head(uri, function(err, res, body){
-					console.log('content-type:', res.headers['content-type']);
-					console.log('content-length:', res.headers['content-length']);
+		var data = require('fs').readFileSync('image.gif');
+		var download = function (uri, filename, callback) {
+			request.head(uri, function (err, res, body) {
+				console.log('content-type:', res.headers['content-type']);
+				console.log('content-length:', res.headers['content-length']);
 
-					request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
-				});
-			};
-
-			download('http://thecatapi.com/api/images/get?format=src&type=gif', 'image.gif', function(){
-				console.log('Image downloaded from server');
+				request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
 			});
+		};
 
-			var url = "http://catfacts-api.appspot.com/api/facts?number=1";
+		download('http://thecatapi.com/api/images/get?format=src&type=gif', 'image.gif', function () {
+			console.log('Image downloaded from server');
+		});
 
-			request({
-				url: url,
-				json: true
-			}, function (error, response, body) {
+		var url = "http://catfacts-api.appspot.com/api/facts?number=1";
 
-				if (!error && response.statusCode === 200) {
-					fs.writeFile('message.txt', body.facts, (err) => {
-						if (err) throw err;
-						console.log('Fact downloaded from the Server!');
-					});
-				}
-			})
+		request({
+			url: url,
+			json: true
+		}, function (error, response, body) {
 
-			var catFactText = fs.readFileSync("message.txt").toString();
-			console.log(catFactText);
-					// Make post request on media endpoint. Pass file data as media parameter
-			Twitter.post('media/upload', {media: data}, function(error, media, response) {
+			if (!error && response.statusCode === 200) {
+				// TODO: fix error
+				//fs.writeFile('message.txt', body.facts, (err) = > {
+				//	if (err) throw err;
+				console.log('Fact downloaded from the Server!');
+				// })
 
-				if (!error) {\
+			}
+		});
 
-			    // If successful, a media object will be returned.
-			    console.log(media);
-			    var statusString = "Okay @" + tweet.user.screen_name + '\u{2757}' + " " + catFactText;
-			    // Lets tweet it
-			    var status = {
-			    	status: statusString,
-			    	in_reply_to_status_id: tweet.id_str,
-			      media_ids: media.media_id_string // Pass the media id string
-			  } 
+		var catFactText = fs.readFileSync("message.txt").toString();
+		console.log(catFactText);
+		// Make post request on media endpoint. Pass file data as media parameter
+		Twitter.post('media/upload', {media: data}, function (error, media, response) {
 
-			  Twitter.post('statuses/update', status, function(error, tweet, response) {
-			  	if (!error) {
-			  		console.log("Replying to: " + tweet.in_reply_to_screen_name + "\n" + "Message: " + tweet.text);
-			  	}
-			  });
+			if (!error) {
 
-			} else{
+				// If successful, a media object will be returned.
+				console.log(media);
+				var statusString = "Okay @" + tweet.user.screen_name + '\u{2757}' + " " + catFactText;
+				// Lets tweet it
+				var status = {
+					status: statusString,
+					in_reply_to_status_id: tweet.id_str,
+					media_ids: media.media_id_string // Pass the media id string
+				};
+
+				Twitter.post('statuses/update', status, function (error, tweet, response) {
+					if (!error) {
+						console.log("Replying to: " + tweet.in_reply_to_screen_name + "\n" + "Message: " + tweet.text);
+					}
+				});
+
+			} else {
 				console.log(error);
 			}
 		});
 
-				});
+	});
 
-				stream.on('error', function(error) {
-					console.log(error);
-				});
-			});
+	stream.on('error', function (error) {
+		console.log(error);
+	});
+});
 			
